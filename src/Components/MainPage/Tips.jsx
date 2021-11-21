@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
 
 const Tips = () => {
   const [objectServer, setObjectServer] = useState({});
-  const serverURL = 'http://localhost:4000';
+  const serverURL = 'http://localhost:8000';
 
   const socket = socketIOClient(serverURL);
-  socket.on('infoEvent', (object) => {
-    setObjectServer(object);
+  socket.on('infoEvent', (obj) => {
+    setObjectServer(obj);
   });
+
+  useEffect(() => {
+    console.log(objectServer)
+  }, [objectServer])
 
   const [email, setEmail] = useState(null);
   const [status, setStatus] = useState(false);
@@ -18,17 +22,13 @@ const Tips = () => {
 
     setStatus(true);
 
-    /*
-    fetch('localhost:3001', {
+    fetch('http://localhost:8000/recommendation', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(email),
+      body: email,
     })
       .then((response) => response.json())
-      .then((json) => json);
-    */
+      .then((json) => console.log(json));
+    
   }
 
   return (
