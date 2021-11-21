@@ -143,9 +143,9 @@ const MainPage = () => {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    /*
-    fetch('localhost:3001', {
+    console.log(form)
+    
+    fetch('http://localhost:8000/registration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -153,8 +153,7 @@ const MainPage = () => {
       body: JSON.stringify(form),
     })
       .then((response) => response.json())
-      .then((json) => json);
-    */
+      .then((json) => console.log(json));  
   }
 
   const segmentStocks = [
