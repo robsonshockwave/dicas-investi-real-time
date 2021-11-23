@@ -1,34 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import socketIOClient from 'socket.io-client';
+import teste from './teste.json';
 
 const Tips = () => {
-  const [objectServer, setObjectServer] = useState({});
-  const serverURL = 'http://localhost:8000';
+  const [email, setEmail] = useState(null);
+  const [status, setStatus] = useState(false);
 
-  const socket = socketIOClient(serverURL);
+  const [objectServer, setObjectServer] = useState(teste);
+  const serverURL = 'ws://publisher_service:8001/stream/products?email=$';
+
+  // const socket = socketIOClient(serverURL);
+
+  /*
   socket.on('infoEvent', (obj) => {
     setObjectServer(obj);
   });
+  */
 
+  /*
   useEffect(() => {
-    console.log(objectServer)
-  }, [objectServer])
-
-  const [email, setEmail] = useState(null);
-  const [status, setStatus] = useState(false);
+    console.log(objectServer);
+  }, [objectServer]);
+  */
 
   function handleSubmit(event) {
     event.preventDefault();
 
     setStatus(true);
 
+    /*
     fetch('http://localhost:8000/recommendation', {
       method: 'POST',
       body: email,
     })
       .then((response) => response.json())
       .then((json) => console.log(json));
-    
+    */
   }
 
   return (
@@ -54,141 +61,102 @@ const Tips = () => {
         </form>
       )}
 
-      {status && (
-        <div className="container-card-div-tips">
-          <div className="animeLeft">
-            <div className="div-card-tips">
-              <h1>Teste</h1>
-              <h3 className="h3-tips">Teste</h3>
+      <div className="container-card-div-tips">
+        {status &&
+          objectServer.map((item) => (
+            <div className="animeLeft">
+              <div className="div-card-tips">
+                <h1 className="h1-tips">{item.name}</h1>
+                <h4 className="h4-tips">
+                  <a href={item.link}>→ {item.source}</a>
+                </h4>
 
-              <div className="div-number-tips">
-                <p className="number-tips">2.320</p>
-                <p className="number-porcent-tips">→ 0.110 (4.966%)</p>
-              </div>
+                {item.segment && (
+                  <h5 className="h5-tips" style={{ marginTop: '-10px' }}>
+                    {item.segment}
+                  </h5>
+                )}
+                {item.strategy && (
+                  <h5 className="h5-tips" style={{ marginTop: '-10px' }}>
+                    {item.strategy}
+                  </h5>
+                )}
+                {item.ticker && <h3 className="h3-tips">{item.ticker}</h3>}
+                {item.classification && (
+                  <h3 className="h3-tips">{item.classification}</h3>
+                )}
 
-              <div className="div-info-tips">
-                <p>
-                  <strong>Open:</strong> 2.230
-                </p>
-                <p>
-                  <strong>Market CAP:</strong> 93.8M
-                </p>
-                <p>
-                  <strong>High:</strong> 2.325
-                </p>
-                <p>
-                  <strong>P/E ratio:</strong> 20.10
-                </p>
-                <p>
-                  <strong>Low:</strong> 2.215
-                </p>
-                <p>
-                  <strong>Dividend Yeld:</strong> 1.67%
-                </p>
-              </div>
-            </div>
-          </div>
+                <div className="div-number-tips">
+                  {item.price && (
+                    <p className="number-tips">
+                      <span className="span-tips">R$: </span>
+                      {item.price?.toFixed(2)}
+                    </p>
+                  )}
+                  {item.deadline && (
+                    <p className="number-tips">
+                      <span className="span-tips">Prazo Final: </span>
+                      {item.deadline}{' '}
+                      <span style={{ fontSize: '1.2rem', paddingLeft: '3px' }}>
+                        d(s)
+                      </span>
+                    </p>
+                  )}
+                  {item.redemption && (
+                    <p className="number-tips-medium">
+                      <span className="span-tips">Redenção: </span>
+                      {item.redemption}
+                    </p>
+                  )}
+                </div>
 
-          <div className="animeLeft">
-            <div className="div-card-tips">
-              <h1>Teste</h1>
-              <h3 className="h3-tips">Teste</h3>
-
-              <div className="div-number-tips">
-                <p className="number-tips">2.320</p>
-                <p className="number-porcent-tips">→ 0.110 (4.966%)</p>
-              </div>
-
-              <div className="div-info-tips">
-                <p>
-                  <strong>Open:</strong> 2.230
-                </p>
-                <p>
-                  <strong>Market CAP:</strong> 93.8M
-                </p>
-                <p>
-                  <strong>High:</strong> 2.325
-                </p>
-                <p>
-                  <strong>P/E ratio:</strong> 20.10
-                </p>
-                <p>
-                  <strong>Low:</strong> 2.215
-                </p>
-                <p>
-                  <strong>Dividend Yeld:</strong> 1.67%
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="animeLeft">
-            <div className="div-card-tips">
-              <h1>Teste</h1>
-              <h3 className="h3-tips">Teste</h3>
-
-              <div className="div-number-tips">
-                <p className="number-tips">2.320</p>
-                <p className="number-porcent-tips">→ 0.110 (4.966%)</p>
-              </div>
-
-              <div className="div-info-tips">
-                <p>
-                  <strong>Open:</strong> 2.230
-                </p>
-                <p>
-                  <strong>Market CAP:</strong> 93.8M
-                </p>
-                <p>
-                  <strong>High:</strong> 2.325
-                </p>
-                <p>
-                  <strong>P/E ratio:</strong> 20.10
-                </p>
-                <p>
-                  <strong>Low:</strong> 2.215
-                </p>
-                <p>
-                  <strong>Dividend Yeld:</strong> 1.67%
-                </p>
+                <div className="div-info-tips">
+                  {item.dividend_yield && (
+                    <p>
+                      <strong>Rendimento Div.:</strong>{' '}
+                      {item.dividend_yield.toFixed(2)}
+                    </p>
+                  )}
+                  {item.mean_daily_return && (
+                    <p>
+                      <strong>Ret. médio diário:</strong>{' '}
+                      {item.mean_daily_return.toFixed(2)}
+                    </p>
+                  )}
+                  {item.mean_daily_volume && (
+                    <p>
+                      <strong>Vol. médio diário:</strong>{' '}
+                      {item.mean_daily_volume.toFixed(2)}
+                    </p>
+                  )}
+                  {item.forecast12m && (
+                    <p>
+                      <strong>Previsão 12m:</strong>{' '}
+                      {item.forecast12m.toFixed(2)}
+                    </p>
+                  )}
+                  {item.return12m && (
+                    <p>
+                      <strong>Retorno 12m:</strong> {item.return12m.toFixed(2)}
+                    </p>
+                  )}
+                  {item.min_application && (
+                    <p>
+                      <strong>Aplicação min.:</strong>{' '}
+                      {item.min_application.toFixed(2)}
+                    </p>
+                  )}
+                  {item.month_return && (
+                    <p>
+                      <strong>Retorno por mês:</strong>{' '}
+                      {item.month_return.toFixed(2)}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="animeLeft">
-            <div className="div-card-tips">
-              <h1>Teste</h1>
-              <h3 className="h3-tips">Teste</h3>
-
-              <div className="div-number-tips">
-                <p className="number-tips">2.320</p>
-                <p className="number-porcent-tips">→ 0.110 (4.966%)</p>
-              </div>
-
-              <div className="div-info-tips">
-                <p>
-                  <strong>Open:</strong> 2.230
-                </p>
-                <p>
-                  <strong>Market CAP:</strong> 93.8M
-                </p>
-                <p>
-                  <strong>High:</strong> 2.325
-                </p>
-                <p>
-                  <strong>P/E ratio:</strong> 20.10
-                </p>
-                <p>
-                  <strong>Low:</strong> 2.215
-                </p>
-                <p>
-                  <strong>Dividend Yeld:</strong> 1.67%
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+          ))}
+      </div>
     </div>
   );
 };

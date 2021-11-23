@@ -6,6 +6,7 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  z-index: 999;
 }
 
 .title-main-page {
@@ -216,18 +217,45 @@
   flex-wrap: wrap;
 }
 
+.h1-tips {
+  font-size: 1.2rem;
+  margin: 0 0 5px 5px;
+}
+
+.h4-tips {
+  font-size: 0.9rem;
+  margin: 0 0 10px 5px;
+}
+
+.h5-tips {
+  font-size: 0.7rem;
+  margin: 0 0 10px 5px;
+}
+
 .div-card-tips {
   margin: 5px;
   padding: 25px;
   border: 0.5px solid #8848ff;
   background: rgb(253, 250, 250);
-  width: 400px;
+  min-width: 385px;
+  max-width: 385px;
+  min-height: 325px;
+  max-height: 325px;
   border-radius: 7px;
 }
 
+.span-tips {
+  color: rgb(85, 82, 82);
+  font-size: 0.8rem;
+  font-weight: 550;
+  padding-right: 5px;
+}
+
 .h3-tips {
+  font-size: 1rem;
   padding-left: 5px;
   font-weight: 500;
+  color: #712bcc;
 }
 
 .div-number-tips {
@@ -237,8 +265,19 @@
 }
 
 .number-tips {
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
   font-weight: bold;
+  padding: 10px 0;
+}
+
+.number-tips-medium {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding: 10px 0;
 }
 
 .number-porcent-tips {
@@ -252,6 +291,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 7px;
+  font-size: 0.85rem;
+}
+
+.div-info-tips p {
+  padding-left: 5px;
 }
 
 .container-card-div-tips {
