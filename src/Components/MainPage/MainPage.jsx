@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './styles.css';
 import '../../App.css';
 import Select from 'react-select';
+import verificationForm from '../../funcHolders';
 
 const MainPage = () => {
   const [stocks, setStocks] = useState(false);
@@ -11,6 +12,8 @@ const MainPage = () => {
   const [pensionFunds, setPensionFunds] = useState(false);
 
   const [email, setEmail] = useState(null);
+
+  const [response, setResponse] = useState('');
 
   function handleChangeStocks({ target }) {
     if (target.checked) {
@@ -141,10 +144,19 @@ const MainPage = () => {
     },
   };
 
+  verificationForm(
+    form,
+    stocks,
+    realStateFunds,
+    coe,
+    investimentFunds,
+    pensionFunds
+  );
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form)
-    
+    console.log(form);
+
     fetch('http://localhost:8000/registration', {
       method: 'POST',
       headers: {
@@ -153,7 +165,7 @@ const MainPage = () => {
       body: JSON.stringify(form),
     })
       .then((response) => response.json())
-      .then((json) => console.log(json));  
+      .then((json) => setResponse(json.message));
   }
 
   const segmentStocks = [
@@ -166,9 +178,9 @@ const MainPage = () => {
   ];
 
   const recommendationStocks = [
-    { value: 'Compra', label: 'Compra' },
-    { value: 'Venda', label: 'Venda' },
-    { value: 'Neutro', label: 'Neutro' },
+    { value: 'COMPRA', label: 'Compra' },
+    { value: 'VENDA', label: 'Venda' },
+    { value: 'NEUTRO', label: 'Neutro' },
   ];
 
   const segmentRSFRSF = [
@@ -235,12 +247,12 @@ const MainPage = () => {
             type="checkbox"
             onChange={handleChangeStocks}
           />
-          <span className="checkbox-main-page">Stocks</span>
+          <span className="checkbox-main-page">Ações</span>
         </label>
 
         {stocks && (
           <div className="div-true-main-page animeLeft">
-            <span className="input-true-main-page">Seguimento</span>
+            <span className="input-true-main-page">Segmento</span>
             <Select
               isMulti
               name="segment"
@@ -261,7 +273,9 @@ const MainPage = () => {
             />
 
             <label htmlFor="twelvemin">
-              <span className="input-true-main-page">12 Min</span>
+              <span className="input-true-main-page">
+                Retorno Mínimo (12 meses)
+              </span>
             </label>
             <input
               id="twelvemin"
@@ -270,10 +284,13 @@ const MainPage = () => {
               value={twelvemin}
               onChange={(event) => setTwelvemin(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="twelvemax">
-              <span className="input-true-main-page">12 Max</span>
+              <span className="input-true-main-page">
+                Retorno Máximo (12 meses)
+              </span>
             </label>
             <input
               id="twelvemax"
@@ -282,10 +299,11 @@ const MainPage = () => {
               value={twelvemax}
               onChange={(event) => setTwelvemax(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="dividendYieldmin">
-              <span className="input-true-main-page">Min Dividendo</span>
+              <span className="input-true-main-page">Dividendo Mínimo (%)</span>
             </label>
             <input
               id="dividendYieldmin"
@@ -294,10 +312,11 @@ const MainPage = () => {
               value={dividendYieldmin}
               onChange={(event) => setDividendYieldmin(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="dividendYieldmax">
-              <span className="input-true-main-page">Max Dividendo</span>
+              <span className="input-true-main-page">Dividendo Máximo (%)</span>
             </label>
             <input
               id="dividendYieldmax"
@@ -306,10 +325,11 @@ const MainPage = () => {
               value={dividendYieldmax}
               onChange={(event) => setDividendYieldmax(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="pricemin">
-              <span className="input-true-main-page">Min Preço</span>
+              <span className="input-true-main-page">Preço Mínimo</span>
             </label>
             <input
               id="pricemin"
@@ -318,10 +338,11 @@ const MainPage = () => {
               value={pricemin}
               onChange={(event) => setPricemin(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="pricemax">
-              <span className="input-true-main-page">Max Preço</span>
+              <span className="input-true-main-page">Preço Máximo</span>
             </label>
             <input
               id="pricemax"
@@ -330,6 +351,7 @@ const MainPage = () => {
               value={pricemax}
               onChange={(event) => setPricemax(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
           </div>
         )}
@@ -340,12 +362,12 @@ const MainPage = () => {
             type="checkbox"
             onChange={handleChangeRealStateFunds}
           />
-          <span className="checkbox-main-page">Real State Funds</span>
+          <span className="checkbox-main-page">Fundos Imobiliários</span>
         </label>
 
         {realStateFunds && (
           <div className="div-true-main-page animeLeft">
-            <span className="input-true-main-page">Seguimento</span>
+            <span className="input-true-main-page">Segmento</span>
             <Select
               isMulti
               name="segmentRSF"
@@ -356,7 +378,9 @@ const MainPage = () => {
             />
 
             <label htmlFor="twelveminRSF">
-              <span className="input-true-main-page">12 Min</span>
+              <span className="input-true-main-page">
+                Retorno Mínimo (12 meses)
+              </span>
             </label>
             <input
               id="twelveminRSF"
@@ -365,10 +389,13 @@ const MainPage = () => {
               value={twelveminRSF}
               onChange={(event) => setTwelveminRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="twelvemaxRSF">
-              <span className="input-true-main-page">12 Max</span>
+              <span className="input-true-main-page">
+                Retorno Máximo (12 meses)
+              </span>
             </label>
             <input
               id="twelvemaxRSF"
@@ -377,10 +404,11 @@ const MainPage = () => {
               value={twelvemaxRSF}
               onChange={(event) => setTwelvemaxRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="dividendYieldminRSF">
-              <span className="input-true-main-page">Min Dividendo</span>
+              <span className="input-true-main-page">Dividendo Mínimo (%)</span>
             </label>
             <input
               id="dividendYieldminRSF"
@@ -389,10 +417,11 @@ const MainPage = () => {
               value={dividendYieldminRSF}
               onChange={(event) => setDividendYieldminRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="dividendYieldmaxRSF">
-              <span className="input-true-main-page">Max Dividendo</span>
+              <span className="input-true-main-page">Dividendo Máximo (%)</span>
             </label>
             <input
               id="dividendYieldmaxRSF"
@@ -401,10 +430,11 @@ const MainPage = () => {
               value={dividendYieldmaxRSF}
               onChange={(event) => setDividendYieldmaxRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="priceminRSF">
-              <span className="input-true-main-page">Min Preço</span>
+              <span className="input-true-main-page">Preço Mínimo</span>
             </label>
             <input
               id="priceminRSF"
@@ -413,10 +443,11 @@ const MainPage = () => {
               value={priceminRSF}
               onChange={(event) => setPriceminRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="pricemaxRSF">
-              <span className="input-true-main-page">Max Preço</span>
+              <span className="input-true-main-page">Preço Máximo</span>
             </label>
             <input
               id="pricemaxRSF"
@@ -425,6 +456,7 @@ const MainPage = () => {
               value={pricemaxRSF}
               onChange={(event) => setPricemaxRSF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
           </div>
         )}
@@ -458,10 +490,11 @@ const MainPage = () => {
               value={classification}
               classNamePrefix="select"
               onChange={setClassification}
+              step="0.1"
             />
 
             <label htmlFor="deadlinemin">
-              <span className="input-true-main-page">Prazo Final Min</span>
+              <span className="input-true-main-page">Prazo Mínimo (meses)</span>
             </label>
             <input
               id="deadlinemin"
@@ -470,10 +503,11 @@ const MainPage = () => {
               value={deadlinemin}
               onChange={(event) => setDeadlinemin(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="deadlinemax">
-              <span className="input-true-main-page">Prazo Final Max</span>
+              <span className="input-true-main-page">Prazo Máximo (meses)</span>
             </label>
             <input
               id="deadlinemax"
@@ -482,6 +516,7 @@ const MainPage = () => {
               value={deadlinemax}
               onChange={(event) => setDeadlinemax(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
           </div>
         )}
@@ -492,7 +527,7 @@ const MainPage = () => {
             type="checkbox"
             onChange={handleChangeInvestimentFunds}
           />
-          <span className="checkbox-main-page">Investiments Funds</span>
+          <span className="checkbox-main-page">Fundos de Investimento</span>
         </label>
 
         {investimentFunds && (
@@ -508,7 +543,7 @@ const MainPage = () => {
             />
 
             <label htmlFor="monthReturnminIF">
-              <span className="input-true-main-page">Mês de Retorno Min</span>
+              <span className="input-true-main-page">Retorno Mínimo (mês)</span>
             </label>
             <input
               id="monthReturnminIF"
@@ -517,10 +552,11 @@ const MainPage = () => {
               value={monthReturnminIF}
               onChange={(event) => setMonthReturnminIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="monthReturnmaxIF">
-              <span className="input-true-main-page">Mês de Retorno Max</span>
+              <span className="input-true-main-page">Retorno Máximo (mês)</span>
             </label>
             <input
               id="monthReturnmaxIF"
@@ -529,6 +565,7 @@ const MainPage = () => {
               value={monthReturnmaxIF}
               onChange={(event) => setMonthReturnmaxIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="applicationminIF">
@@ -541,6 +578,7 @@ const MainPage = () => {
               value={applicationminIF}
               onChange={(event) => setApplicationminIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="applicationmaxIF">
@@ -553,10 +591,13 @@ const MainPage = () => {
               value={applicationmaxIF}
               onChange={(event) => setApplicationmaxIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="admTaxminIF">
-              <span className="input-true-main-page">Taxa Min Adm</span>
+              <span className="input-true-main-page">
+                Taxa de Administração Mínima
+              </span>
             </label>
             <input
               id="admTaxminIF"
@@ -565,10 +606,13 @@ const MainPage = () => {
               value={admTaxminIF}
               onChange={(event) => setAdmTaxminIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="admTaxmaxIF">
-              <span className="input-true-main-page">Taxa Max Adm</span>
+              <span className="input-true-main-page">
+                Taxa de Administração Máxima
+              </span>
             </label>
             <input
               id="admTaxmaxIF"
@@ -577,6 +621,7 @@ const MainPage = () => {
               value={admTaxmaxIF}
               onChange={(event) => setAdmTaxmaxIF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
           </div>
         )}
@@ -587,13 +632,13 @@ const MainPage = () => {
             type="checkbox"
             onChange={handleChangePensionFunds}
           />
-          <span className="checkbox-main-page">Pension Funds</span>
+          <span className="checkbox-main-page">Fundos de Previdência</span>
         </label>
 
         {pensionFunds && (
           <div className="div-true-main-page animeLeft">
             <label htmlFor="monthReturnminPF">
-              <span className="input-true-main-page">Mês de Retorno Min</span>
+              <span className="input-true-main-page">Retorno Mínimo (mês)</span>
             </label>
             <input
               id="monthReturnminPF"
@@ -602,10 +647,11 @@ const MainPage = () => {
               value={monthReturnminPF}
               onChange={(event) => setMonthReturnminPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="monthReturnmaxPF">
-              <span className="input-true-main-page">Mês de Retorno Max</span>
+              <span className="input-true-main-page">Retorno Máximo (mês)</span>
             </label>
             <input
               id="monthReturnmaxPF"
@@ -614,6 +660,7 @@ const MainPage = () => {
               value={monthReturnmaxPF}
               onChange={(event) => setMonthReturnmaxPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="applicationminPF">
@@ -626,6 +673,7 @@ const MainPage = () => {
               value={applicationminPF}
               onChange={(event) => setApplicationminPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="applicationmaxPF">
@@ -638,10 +686,13 @@ const MainPage = () => {
               value={applicationmaxPF}
               onChange={(event) => setApplicationmaxPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="admTaxminPF">
-              <span className="input-true-main-page">Taxa Min Adm</span>
+              <span className="input-true-main-page">
+                Taxa de Administração Mínima
+              </span>
             </label>
             <input
               id="admTaxminPF"
@@ -650,10 +701,13 @@ const MainPage = () => {
               value={admTaxminPF}
               onChange={(event) => setAdmTaxminPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
 
             <label htmlFor="admTaxmaxPF">
-              <span className="input-true-main-page">Taxa Max Adm</span>
+              <span className="input-true-main-page">
+                Taxa de Administração Máxima
+              </span>
             </label>
             <input
               id="admTaxmaxPF"
@@ -662,11 +716,14 @@ const MainPage = () => {
               value={admTaxmaxPF}
               onChange={(event) => setAdmTaxmaxPF(event.target.value)}
               className="input-main-page"
+              step="0.1"
             />
           </div>
         )}
 
         <button className="button-main-page">Enviar</button>
+
+        {response && <h4 className="response-main-page">{response}!</h4>}
       </form>
     </div>
   );
